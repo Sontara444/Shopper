@@ -3,6 +3,9 @@ import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
 
 const AddProduct = () => {
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+
   const [image, setImage] = useState(null);
   const [productDetails, setProductDetails] = useState({
     name: "",
@@ -21,14 +24,13 @@ const AddProduct = () => {
   };
 
   const Add_Product = async () => {
-    console.log(productDetails);
     let responseData;
     let product = productDetails;
 
     let formData = new FormData();
     formData.append("product", image);
 
-    await fetch("http://localhost:4001/upload", {
+    await fetch(`${backendUrl}/upload`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -41,11 +43,10 @@ const AddProduct = () => {
       })
       .catch((err) => console.log(err));
 
-    if (responseData.success) {
+    if(responseData.success) {
       product.image = responseData.image_url;
-      console.log(product);
 
-      await fetch("http://localhost:4001/addproduct", {
+      await fetch(`${backendUrl}/addproduct`, {
         method: "POST",
         headers: {
           Accept: "application/json",
