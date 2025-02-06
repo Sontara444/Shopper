@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./CSS/LoginSignup.css";
+import { ShopContext } from "../Context/ShopContext";
 
 const LoginSignup = () => {
   const [state, setState] = useState("Login");
@@ -9,14 +10,16 @@ const LoginSignup = () => {
     email: "",
   });
 
+  const {backendUrl} = useContext(ShopContext)
+
   const changeHandler = (e)=>{
     setformData({...formData,[e.target.name]:e.target.value})
   }
 
   const login = async () => {
-    console.log("login", formData);
+
     let responseData ;
-    await fetch("http://localhost:4001/login", {
+    await fetch(`${backendUrl}/login`, {
       method: "POST",
       headers:{
         Accept: "application/form-data",
@@ -37,9 +40,8 @@ const LoginSignup = () => {
   };
 
   const signup = async () => {
-    // console.log("signUp", formData);
     let responseData ;
-    await fetch("http://localhost:4001/signup", {
+    await fetch(`${backendUrl}signup`, {
       method: "POST",
       headers:{
         Accept: "application/form-data",
